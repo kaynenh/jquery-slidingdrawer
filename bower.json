@@ -1,0 +1,22 @@
+{
+  "name": "jquery-slidingDrawer",
+  "license": "MIT",
+  "authors": [
+    "Kaynen Heikkinen <kaynenh@gmail.com>"
+  ],
+  "description": "jQuery Sliding Drawer",
+  "homepage": "",
+  "keywords": [
+    "jquery",
+    "plugin"
+  ],
+  "main": "src/jquery.slidingdrawer.js",
+  "dependencies": {
+    "jquery": "1"
+  },
+  "ignore": [
+    "npm-debug.log",
+    "bower_components",
+    "node_modules"
+  ]
+}
