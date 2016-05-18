@@ -16,7 +16,7 @@ This plugin is a simple sliding drawer that can show any html content. Typically
 
 	```html
 	<script src="dist/jquery.slidingdrawer.min.js"></script>
-	<link rel="stylesheet" href="../dist/jquery.slidingdrawer.css">
+	<link rel="stylesheet" href="dist/jquery.slidingdrawer.css">
 	```
 
 3. Add HTML after the footer:
@@ -34,11 +34,17 @@ This plugin is a simple sliding drawer that can show any html content. Typically
 
 	```javascript
 	$( function() {
-		$( "#drawer" ).slidingDrawer( {
-			openSpeed: '1000'
+		$( "body > footer" ).slidingDrawer( {
+			openSpeed: '1000',
+			title: "Register",
+			innerContent: "<p>Stay updated and subscribe!</p>",
+			useLocalStorage: true,
+			appendDrawer: true
 		} );
 	} );
 	```
+
+The appearance of the drawer can be modified in /dist/jquery.slidingdrawer.css. The width and heights of the drawer are currently hardcoded in the js.
 
 ## License
 
