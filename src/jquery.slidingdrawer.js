@@ -16,10 +16,11 @@
 		// Create the defaults once
 		var slidingDrawer = "slidingDrawer",
 			defaults = {
-				openSpeed: "1000",
-				title: "Subscribe",
-				innerContent: "<p>Stay updated with our Newsletter!</p>",
-				useLocalStorage: true
+				openSpeed: "1000", //speed of drawer opening
+				title: "Subscribe", //Title in drawer
+				innerContent: "<p>Stay updated with our Newsletter!</p>", //Inner Content of drawer. HTML is allowed
+				useLocalStorage: true, //Adds a local storage variable to track if drawer has already been opened
+				appendDrawer: true //Use js to append the drawer div. Set to false if you need to add div manually.
 			};
 
 		// The actual plugin constructor
@@ -54,7 +55,9 @@
 				if (localStorage.getItem("popState") === "shown" && this.settings.useLocalStorage === true) {
 					alreadyShown = true;
 				} else {
-					$(this.element).after("<div id=\"drawer\"><div class=\"drawer-body\"><button type=\"button\" class=\"close\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><h3>" + this.settings.title + "</h3>" + this.settings.innerContent + "</div></div>");
+					if (this.settings.appendDrawer) {
+						$(this.element).after("<div id=\"drawer\"><div class=\"drawer-body\"><button type=\"button\" class=\"close\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><h3>" + this.settings.title + "</h3>" + this.settings.innerContent + "</div></div>");
+					}
 
 					//@todo: remove hardcoded speed and height/width
 					$(window).on("mousewheel DOMMouseScroll", function (e) {
