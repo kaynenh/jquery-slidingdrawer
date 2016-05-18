@@ -9,17 +9,13 @@
 	<body>
 		<section id="main">Main Section</section>
 		<footer>This is the footer.</footer>
-		<div id="drawer">
-			<div class="drawer-body">
-				<button type="button" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h3>Subscribe</h3>
-				<p>Stay updated with our Newsletter!</p>
-			</div>
-		</div>
 		<script>
 			$( function() {
-				$( "#drawer" ).slidingDrawer( {
-					openSpeed: '1000'
+				$( "body > footer" ).slidingDrawer( {
+					openSpeed: '1000',
+					title: "Register",
+					innerContent: "<p>Stay updated and subscribe!</p>",
+					useLocalStorage: true
 				} );
 			} );
 		</script>

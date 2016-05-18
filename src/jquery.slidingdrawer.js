@@ -16,7 +16,10 @@
 		// Create the defaults once
 		var slidingDrawer = "slidingDrawer",
 			defaults = {
-				openSpeed: "1000"
+				openSpeed: "1000",
+				title: "Subscribe",
+				innerContent: "<p>Stay updated with our Newsletter!</p>",
+				useLocalStorage: true
 			};
 
 		// The actual plugin constructor
@@ -46,48 +49,51 @@
 				//this.yourOtherFunction( "jQuery Boilerplate" );
 
 				var hasScrolled = false;
-				var useLocalStorage = true;
+				var alreadyShown = false;
 
-				if (localStorage.getItem("popState") !== "shown") {
-					useLocalStorage = true;
-				}
+				if (localStorage.getItem("popState") === "shown" && this.settings.useLocalStorage === true) {
+					alreadyShown = true;
+				} else {
+					$(this.element).after("<div id=\"drawer\"><div class=\"drawer-body\"><button type=\"button\" class=\"close\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><h3>" + this.settings.title + "</h3>" + this.settings.innerContent + "</div></div>");
 
-				$(window).on("mousewheel DOMMouseScroll", function (e) {
+					//@todo: remove hardcoded speed and height/width
+					$(window).on("mousewheel DOMMouseScroll", function (e) {
 
-					var direction = (function () {
+						var direction = (function () {
 
-						var delta = (e.type === "DOMMouseScroll" ?
-						e.originalEvent.detail * -40 :
-							e.originalEvent.wheelDelta);
+							var delta = (e.type === "DOMMouseScroll" ?
+							e.originalEvent.detail * -40 :
+								e.originalEvent.wheelDelta);
 
-						return delta > 0 ? 0 : 1;
-					}());
+							return delta > 0 ? 0 : 1;
+						}());
 
-					if(direction === 1) {
-						if (!hasScrolled && useLocalStorage) {
-							$("#drawer")
-								.animate({
-									bottom: 0,
-								}, 1000, function() {
-									//Animation complete
-								});
-							hasScrolled = true;
-							localStorage.setItem("popState","shown");
+						if (direction === 1) {
+							if (!hasScrolled && !alreadyShown) {
+								$("#drawer")
+									.animate({
+										bottom: 0,
+									}, 1000, function () {
+										//Animation complete
+									});
+								hasScrolled = true;
+								localStorage.setItem("popState", "shown");
+							}
 						}
-					}
-					if(direction === 0) {
-						// scroll up
-					}
-				});
+						if (direction === 0) {
+							// scroll up
+						}
+					});
 
-				$("#drawer .close").on("click", function() {
-					$("#drawer")
-						.animate({
-							bottom: "-300px",
-						}, 500, function() {
-							//Animation complete
-						});
-				});
+					$("#drawer .close").on("click", function () {
+						$("#drawer")
+							.animate({
+								bottom: "-300px",
+							}, 500, function () {
+								//Animation complete
+							});
+					});
+				}
 			},
 			yourOtherFunction: function( text ) {
 
