@@ -35,11 +35,15 @@ This plugin is a simple sliding drawer that can show any html content. Typically
 	```javascript
 	$( function() {
 		$( "body > footer" ).slidingDrawer( {
-			openSpeed: '1000',
-			title: "Register",
-			innerContent: "<p>Stay updated and subscribe!</p>",
-			useLocalStorage: true,
-			appendDrawer: true
+			openSpeed: "1000", //speed of drawer opening
+			drawerHeight: "320", //if changing, edit jquery.slidingdrawer.css (height of drawer + any padding on drawer)
+			drawerWidth: "325", //if changing, edit jquery.slidingdrawer.css
+			title: "Subscribe", //Title in drawer. Overridden if appendDrawer is false.
+			innerContent: "<p>Stay updated with our Newsletter!</p>", //Inner Content of drawer. HTML is allowed. Overridden if appendDrawer is false.
+			useLocalStorage: true, //Adds a local storage variable to track if drawer has already been opened. Set false to always show the drawer. Probably only useful for testing.
+			appendDrawer: true, //Use js to append the drawer div. Set to false if you need to add div manually.
+			showAgainAfter: 2160, //How long in hours before the popup should display again. Defaults to 90 days.
+			disable: false //Disable the drawer completely. Useful for not showing after a person is registered, etc.
 		} );
 	} );
 	```
