@@ -25,3 +25,15 @@
     bottom: 0;
     opacity: 100;
 }
+
+@media only screen and (max-device-width: 480px) {
+    #drawer {
+        right: 0;
+        width: 100%;
+    }
+    #drawer .drawer-body {
+        border-radius: 0;
+        right: 0;
+        width: 100%;
+    }
+}

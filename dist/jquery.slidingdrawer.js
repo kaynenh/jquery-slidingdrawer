@@ -1,5 +1,5 @@
 /*
- *  jquery-slidingdrawer - v1.0.0
+ *  jquery-slidingdrawer - v1.1.0
  *  A jquery-enabled sliding drawer
  *  
  *
@@ -39,6 +39,8 @@ Date.prototype.addHours= function(h){
 				disable: false //Disable the drawer completely. Useful for not showing after a person is registered, etc.
 			};
 
+		var supportsTouch = "ontouchstart" in window || navigator.msMaxTouchPoints;
+
 		// The actual plugin constructor
 		function SlidingDrawerPlugin ( element, options ) {
 			this.element = element;
@@ -66,9 +68,10 @@ Date.prototype.addHours= function(h){
 				// call them like the example below
 				// this.yourOtherFunction( "jQuery Boilerplate" );
 
-				var hasScrolled = false,
-					alreadyShown = false,
-					nextShowDate = new Date(),
+				this.hasScrolled = false;
+				this.alreadyShown = false;
+
+				var nextShowDate = new Date(),
 					nowDate = new Date(),
 					thisDrawer = this;
 
@@ -87,7 +90,7 @@ Date.prototype.addHours= function(h){
 				console.log(this.settings.disable);*/
 
 				if ((localStorage.getItem("popState") === "shown" && this.settings.useLocalStorage === true && !dateExpired) || this.settings.disable === true) {
-					alreadyShown = true; //Don't show the drawer
+					this.alreadyShown = true; //Don't show the drawer
 				} else {
 
 					//If we are planning to show the drawer and it isn't already added to the page, add it
@@ -96,34 +99,44 @@ Date.prototype.addHours= function(h){
 					}
 
 					//Add a window scroll function and check which direction. If scrolling down, show. If up, don't show.
-					$(window).on("mousewheel DOMMouseScroll", function (e) {
+					if (!supportsTouch) {
+						$(window).on("mousewheel DOMMouseScroll", function (e) {
 
-						var direction = (function () {
+							var direction = (function () {
 
-							var delta = (e.type === "DOMMouseScroll" ?
-							e.originalEvent.detail * -40 :
-								e.originalEvent.wheelDelta);
+								var delta = (e.type === "DOMMouseScroll" ?
+								e.originalEvent.detail * -40 :
+									e.originalEvent.wheelDelta);
 
-							return delta > 0 ? 0 : 1;
-						}());
+								return delta > 0 ? 0 : 1;
+							}());
 
-						if (direction === 1) {
-							if (!hasScrolled && !alreadyShown) {
-								$("#drawer")
-									.animate({
-										bottom: 0,
-									}, thisDrawer.settings.openSpeed, function () {
-										//Animation complete
-									});
-								hasScrolled = true;
-								localStorage.setItem("popState", "shown");
-								localStorage.setItem("shownDate", Date.now());
+							if (direction === 1) {
+								thisDrawer.showDrawer();
 							}
-						}
-						if (direction === 0) {
-							// scroll up
-						}
-					});
+							if (direction === 0) {
+								// scroll up
+							}
+						});
+					}
+					else {
+						//Mobile events
+						var lastPoint = null;
+
+						$(window).on("touchmove", function (e) {
+
+							var currentPoint = e.originalEvent.changedTouches[0].pageY;
+
+							if (lastPoint != null && lastPoint < currentPoint) {
+								//Scrolling up
+							} else if (lastPoint != null && lastPoint > currentPoint) {
+								//Scrolling Down
+								thisDrawer.showDrawer();
+							}
+
+							lastPoint = currentPoint;
+						});
+					}
 
 					$("#drawer .close").on("click", function () {
 						$("#drawer")
@@ -139,6 +152,19 @@ Date.prototype.addHours= function(h){
 
 				// some logic
 				$( this.element ).text( text );
+			},
+			showDrawer: function() {
+				if (!this.hasScrolled && !this.alreadyShown) {
+					$("#drawer")
+						.animate({
+							bottom: 0,
+						}, this.settings.openSpeed, function () {
+							//Animation complete
+						});
+					this.hasScrolled = true;
+					localStorage.setItem("popState", "shown");
+					localStorage.setItem("shownDate", Date.now());
+				}
 			}
 		} );
 

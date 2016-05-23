@@ -48,7 +48,7 @@ This plugin is a simple sliding drawer that can show any html content. Typically
 	} );
 	```
 
-The appearance of the drawer can be modified in /dist/jquery.slidingdrawer.css. The width and heights of the drawer are currently hardcoded in the js.
+The appearance of the drawer can be modified in /dist/jquery.slidingdrawer.css. If you modify drawerHeight or drawerWidth, be sure to change it in css as well.
 
 ## License
 
